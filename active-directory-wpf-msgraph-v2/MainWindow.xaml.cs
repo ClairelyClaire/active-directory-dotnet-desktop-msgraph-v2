@@ -38,6 +38,10 @@ namespace active_directory_wpf_msgraph_v2
         /// </summary>
         private async void CallGraphButton_Click(object sender, RoutedEventArgs e)
         {
+            Button cmd = sender as Button;
+            cmd.IsEnabled = false;
+            cmd.Content = "Working...";
+
             AuthenticationResult authResult = null;
             var app = App.PublicClientApp;
             ResultText.Text = string.Empty;
@@ -47,7 +51,9 @@ namespace active_directory_wpf_msgraph_v2
 
             try
             {
-                authResult = await app.AcquireTokenSilentAsync(scopes, accounts.FirstOrDefault());
+                // this is different if you want to use integrated auth.
+                // authResult = await app.AcquireTokenSilentAsync(scopes, accounts.FirstOrDefault());
+                authResult = await app.AcquireTokenByIntegratedWindowsAuthAsync(scopes);
             }
             catch (MsalUiRequiredException ex)
             {
@@ -76,6 +82,9 @@ namespace active_directory_wpf_msgraph_v2
                 DisplayBasicTokenInfo(authResult);
                 this.SignOutButton.Visibility = Visibility.Visible;
             }
+
+            cmd.IsEnabled = true;
+            cmd.Content = "Call Microsoft Graph API";
         }
 
         /// <summary>

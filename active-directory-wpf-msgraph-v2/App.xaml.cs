@@ -16,7 +16,10 @@ namespace active_directory_wpf_msgraph_v2
     {
         static App()
         {
-            _clientApp = new PublicClientApplication(ClientId, "https://login.microsoftonline.com/common", TokenCacheHelper.GetUserCache());
+            // the common endpoint (supports AAD and MSA) doesn't permit integrated auth
+            // you must use either a tenant (domain or GUID) or the AAD generic endpoint (organizations)
+            //_clientApp = new PublicClientApplication(ClientId, "https://login.microsoftonline.com/common", TokenCacheHelper.GetUserCache());
+            _clientApp = new PublicClientApplication(ClientId, "https://login.microsoftonline.com/organizations", TokenCacheHelper.GetUserCache());
         }
         //Below is the clientId of your app registration. 
         //You have to replace the below with the Application Id for your app registration
